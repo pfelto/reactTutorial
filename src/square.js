@@ -11,10 +11,10 @@ const handleClick = (e) => {
   //moved state to board so can make it a function again
   //we can use arrow function like here or just make it a normal function
   //function Square({value,click}){ return ( JSX ); }
-  const Square = ({value, click }) => (
+  const Square = ({value, onClick }) => (
     <button 
     className = 'square' 
-    onClick={click}>
+    onClick={onClick}>
         {value}
     </button>
   );
