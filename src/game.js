@@ -24,6 +24,7 @@ class Game extends React.Component {
         this.state = {
             history: [{
                 squares: Array(9).fill(null),
+                location: null,
             }],
             //Keep track which step/move we are viewing
             stepNumber: 0,
@@ -43,11 +44,14 @@ class Game extends React.Component {
         this.setState({
           history: history.concat([{
             squares: squares,
+            //try moving location into history? 
+            location: i,
           }]),
           //depending on what the history looks like will tell us the step.
           stepNumber: history.length,
           xIsNext: !this.state.xIsNext,
         });
+        //console.log(squares);
       }
 
     jumpTo(step){
@@ -58,16 +62,22 @@ class Game extends React.Component {
     }
 
     render() {
-        console.log(this.state.stepNumber);
+        //console.log(this.state.stepNumber);
+        //console.log(this.state.location);
         //get a copy of history to use for current
         const history = this.state.history;
         //current is just the latest game state from history
         const current = history[this.state.stepNumber];
+        //const squares = current.squares.slice();
+        //console.log(current);
+        //console.log(history);
         const winner = calculateWinner(current.squares);
+ 
 
         const moves = history.map((step,move) => {
+            //console.log(step.location);
             const desc = move ? 
-            `Go to move # ${move}` :
+            `Go to move # ${move} at (${(step.location%3)+1},${Math.floor(step.location/3)+1})` :
             `Go to game start`;
             return (
                 <li key={move}>
