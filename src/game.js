@@ -62,44 +62,33 @@ class Game extends React.Component {
     }
 
     render() {
-        //console.log(this.state.stepNumber);
-        //console.log(this.state.location);
         //get a copy of history to use for current
         const history = this.state.history;
         //current is just the latest game state from history
         const current = history[this.state.stepNumber];
-        //const squares = current.squares.slice();
-        //console.log(current);
-        //console.log(history);
         const winner = calculateWinner(current.squares);
  
 
         const moves = history.map((step,move) => {
-            //console.log(step.location);
+            let cssClass; 
             const desc = move ? 
+            //Challenge 1: Display the location for each move in the format (col, row) in the move history list.
             `Go to move # ${move} at (${(step.location%3)+1},${Math.floor(step.location/3)+1})` :
             `Go to game start`;
+            //Challenge 2: Bold the currently selected item in the move list.
             if(move === this.state.stepNumber){
+              cssClass = 'selected';
+            }
               return (
                   <li key={move}>
                       <button  
-                        className='selected'
+                        className={cssClass}
                         onClick= {() => this.jumpTo(move)}>
                           {desc}
                       </button>
                   </li>
               )
-            } else {
-              return (
-                <li key={move}>
-                    <button  
-                      onClick= {() => this.jumpTo(move)}>
-                        {desc}
-                    </button>
-                </li>
-            )
-            }
-        })
+        })  
         let status;
         if (winner) {
           status = 'Winner: ' + winner;

@@ -48,8 +48,8 @@ body {
   .game-info {
     margin-left: 20px;
   }
-
+/* Challenge 2: Bold the currently selected item in the move list. */
   .selected {
-    font-weight: bold;
+    font-weight: bolder;
   }
   
