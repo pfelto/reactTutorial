@@ -29,6 +29,7 @@ class Game extends React.Component {
             //Keep track which step/move we are viewing
             stepNumber: 0,
             xIsNext: true,
+            ascending: true,
         }
     }
 
@@ -59,6 +60,39 @@ class Game extends React.Component {
             stepNumber: step,
             xIsNext: (step % 2) === 0,
         })
+    }
+
+    handleHistoryToggle(){
+      //Challenge 4: Add a toggle button that lets you sort the moves in either ascending or descending order.
+      /*
+      This does not actually change the LI order just the numbers in front
+      const moveList = document.getElementById('moveList');
+      console.log(moveList);
+      console.log(moveList.getAttribute('reversed'));
+      if(!moveList.getAttribute('reversed')){
+        moveList.setAttribute('reversed',true);
+      } else {
+        moveList.removeAttribute('reversed');
+      }
+      */
+     /*
+     you go to render and draw using a reversed history, which causes the 1 null state to be rendered last and you get a blank board. 
+      const history = this.state.history.slice(0,this.state.stepNumber + 1);
+      const current = history[history.length - 1];
+      const squares = current.squares.slice();
+      const reverse = history.slice().reverse()
+      console.log(history);
+      console.log(current);
+      console.log(squares);
+      console.log(reverse);
+      this.setState({
+        history: reverse,
+      })
+      */
+     //using a state value ascending and toggling it. Have to manipulate moves below as I don't want to change the history array of objects OR just apply an HTML attribute
+     this.setState({
+       ascending: !this.state.ascending,
+     });
     }
 
     render() {
@@ -106,12 +140,15 @@ class Game extends React.Component {
           </div>
           <div className="game-info">
             <div>{status}</div>
-            <ol>{moves}</ol>
+            <ol>{this.state.ascending ? moves : moves.slice().reverse()}</ol>
+            <button onClick={() => this.handleHistoryToggle()}>Toggle</button>
           </div>
         </div>
       );
     }
   }
+
+
 
   function calculateWinner(squares) {
     const lines = [
