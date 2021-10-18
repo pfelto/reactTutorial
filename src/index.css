@@ -52,4 +52,11 @@ body {
   .selected {
     font-weight: bolder;
   }
+
+/* Challenge 5: When someone wins, highlight the three squares that caused the win. 
+Isn't working quite like the challenge 2 where i just added the css style to a variable, so going to use inline style attrib
+*/
+  .winningSquareStyle {
+    background-color: rgb(255, 0, 128);
+  }
   

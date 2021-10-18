@@ -100,8 +100,8 @@ class Game extends React.Component {
         const history = this.state.history;
         //current is just the latest game state from history
         const current = history[this.state.stepNumber];
-        const winner = calculateWinner(current.squares);
- 
+        const  winner  = calculateWinner(current.squares);
+        //console.log(winner);
 
         const moves = history.map((step,move) => {
             let cssClass; 
@@ -125,17 +125,19 @@ class Game extends React.Component {
         })  
         let status;
         if (winner) {
-          status = 'Winner: ' + winner;
+          status = 'Winner: ' + winner.winner;
         } else {
           status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
         }
-
+        //Challenge 5: When someone wins, highlight the three squares that caused the win.
+        //had to pass winner && winner.winningLine as just passing winner.winningLine kept throwing a null error
       return (
         <div className="game">
           <div className="game-board">
             <Board 
                 squares={current.squares}
                 onClick={(i) => this.handleClick(i)}
+                winner = {winner && winner.winningLine}
             />
           </div>
           <div className="game-info">
@@ -151,6 +153,7 @@ class Game extends React.Component {
 
 
   function calculateWinner(squares) {
+    //console.log(squares);
     const lines = [
       [0, 1, 2],
       [3, 4, 5],
@@ -163,8 +166,16 @@ class Game extends React.Component {
     ];
     for (let i = 0; i < lines.length; i++) {
       const [a, b, c] = lines[i];
+      //console.log(a);
+      //console.log(squares[a]);
       if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-        return squares[a];
+        //Challenge 5: When someone wins, highlight the three squares that caused the win. Need to return who won and the winning line to pass it down
+        //console.log(lines[i]);
+        return { 
+          winner: squares[a],
+          winningLine: lines[i],
+        }
+        
       }
     }
     return null;

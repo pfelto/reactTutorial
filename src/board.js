@@ -8,10 +8,15 @@ class Board extends React.Component {
 
 
     renderSquare(i){
+        //console.log(this.props.winner);
+        //Challenge 5: When someone wins, highlight the three squares that caused the win.
+        let winningSquare = (this.props.winner && this.props.winner.includes(i)) ? true : false;
+        //console.log(winningSquare);
         return <Square 
         key = {i}
         value={this.props.squares[i]}
-        onClick = {() => this.props.onClick(i)}/>
+        onClick = {() => this.props.onClick(i)}
+        winner={winningSquare} />
     }
 
 //challenge 3: Rewrite Board to use two loops to make the squares instead of hardcoding them.
@@ -36,6 +41,11 @@ Try one didn't for
     //Still alot of hard coding...
 
     render(){
+        /*
+        if(this.props.winner){
+            console.log(this.props.winner);
+        }
+        */
         let board = [];
         let k = 0;
         for(let c = 0; c < 3; c++){
