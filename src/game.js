@@ -38,9 +38,14 @@ class Game extends React.Component {
         const history = this.state.history.slice(0,this.state.stepNumber + 1);
         const current = history[history.length - 1];
         const squares = current.squares.slice();
+        //console.log(squares);
+        //When you actually win this does not tirgger as squares has the turn before. So you update squares at the end with the winning move and then the calculateWinner in 
+        //render decides there is a winner and the next time you try to click it fires and you get GameOver. 
         if (calculateWinner(squares) || squares[i]) {
+          //console.log("GameOver");
           return;
         }
+
         squares[i] = this.state.xIsNext ? 'X' : 'O';
         this.setState({
           history: history.concat([{
@@ -101,8 +106,15 @@ class Game extends React.Component {
         //current is just the latest game state from history
         const current = history[this.state.stepNumber];
         const  winner  = calculateWinner(current.squares);
+        let tie = false; 
         //console.log(winner);
-
+        //need to be careful for wins on the last turn of the game with this
+        //console.log(this.state.stepNumber);
+        //challenge 5: When no one wins, display a message about the result being a draw.
+        if(( this.state.stepNumber === 9 && !winner )){
+          //console.log("Tie Game");
+          tie = true;
+        }
         const moves = history.map((step,move) => {
             let cssClass; 
             const desc = move ? 
@@ -126,7 +138,12 @@ class Game extends React.Component {
         let status;
         if (winner) {
           status = 'Winner: ' + winner.winner;
-        } else {
+        } 
+        if (tie){
+          status = 'Tie!'
+        } 
+        if (!winner && !tie)
+         {
           status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
         }
         //Challenge 5: When someone wins, highlight the three squares that caused the win.
@@ -144,6 +161,17 @@ class Game extends React.Component {
             <div>{status}</div>
             <ol>{this.state.ascending ? moves : moves.slice().reverse()}</ol>
             <button onClick={() => this.handleHistoryToggle()}>Toggle</button>
+            {tie ? <button onClick={() => this.setState({
+            history: [{
+                squares: Array(9).fill(null),
+                location: null,
+            }],
+            //Keep track which step/move we are viewing
+            stepNumber: 0,
+            xIsNext: true,
+            ascending: true,
+             }) }>Reset</button> 
+            : null}
           </div>
         </div>
       );
